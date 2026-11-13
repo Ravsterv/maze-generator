@@ -1,4 +1,5 @@
 # This will contain the Stack class
+from tile import Tile
 
 
 class Stack:
@@ -16,7 +17,7 @@ class Stack:
         """
         self._stack = []
 
-    def pop(self):
+    def pop(self) -> Tile:
         """
         take the top item off the stack
 
@@ -28,17 +29,19 @@ class Stack:
         self._stack = self._stack[:(len(self._stack) - 1)]
         return tile
 
-    def push(self, tile):
+    def push(self, tile: Tile) -> None:
         """
         Add an item to the stack
         :return:
         """
         self._stack.append(tile)
 
-
-    def peek(self):
+    def peek(self) -> Tile:
         """
         Look at top item without removing it
         :return:
         """
         return self._stack[-1]
+
+    def __len__(self):
+        return len(self._stack)
