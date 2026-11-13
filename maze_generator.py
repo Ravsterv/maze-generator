@@ -64,7 +64,7 @@ def main():
         possible_tiles = grid.get_adjacent(maze_path.peek(), len(maze_path), 1)
         print(possible_tiles)
         print(grid.display())
-        # if no tile fits conditions, pop too tile
+        # if no tile fits conditions, pop top tile
         if len(possible_tiles) == 0:
             # swap tile to no longer path
             for t in range(stuck_back_track):
