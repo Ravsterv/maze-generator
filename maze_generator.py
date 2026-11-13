@@ -65,22 +65,21 @@ def main():
         print(possible_tiles)
         print(grid.display())
         # if no tile fits conditions, pop top tile
+
+        # improve back track to mark tiles previously back tracked too to further back tracking
         if len(possible_tiles) == 0:
             # swap tile to no longer path
-            for t in range(stuck_back_track):
-                reset_tile = maze_path.pop()
-                reset_tile.set_path()
 
-            stuck_back_track += 1
+            reset_tile = maze_path.pop()
+            reset_tile.set_path()
+            while True:
+                if maze_path.peek().get_back_track():
+                    maze_path.pop().set_path()
+                else:
+                    break
+
+            maze_path.peek().set_back_track()
             continue
-
-        if previously_stuck and len(possible_tiles) == 1:
-            old_tile = maze_path.pop()
-            old_tile.set_path()
-            continue
-
-        if previously_stuck and len(possible_tiles) > 1:
-            previously_stuck = False
 
 
 

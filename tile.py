@@ -3,12 +3,19 @@ class Tile:
         self._on_path = False
         self._x = x
         self._y = y
+        self._previously_backed = False
 
     def get_path(self):
         return self._on_path
 
     def set_path(self):
         self._on_path = not self._on_path
+
+    def set_back_track(self):
+        self._previously_backed = not self._previously_backed
+
+    def get_back_track(self):
+        return self._previously_backed
 
     def get_cord(self):
         return self._x, self._y
