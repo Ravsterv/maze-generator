@@ -4,15 +4,16 @@ import random
 from py_stack import Stack
 from tile import Tile
 from grid import Grid
+import time
+import os
+from variables import *
 
-MAZE_SIZE = 10 # Min size ~ 4
-MINIMUM_SIZE = 5 # force path to have a minimum length before terminating
 
 
 def main():
+    previously_stuck = False
+    stuck_back_track = 0
     STARTING_SIDE = ["NORTH", "SOUTH", "EAST", "WEST"]
-
-
     maze_path = Stack()
     grid = Grid()
 
@@ -20,7 +21,7 @@ def main():
     for i in range(MAZE_SIZE):
         new_row = []
         for j in range(MAZE_SIZE):
-            new_tile = Tile(i, j)
+            new_tile = Tile(j, i)
             new_row.append(new_tile)
 
         grid.add_row(new_row)
@@ -43,6 +44,7 @@ def main():
         case "WEST":
             chosen_tile = grid.get_tile(0, random_tile)
 
+    chosen_tile.set_path()
     maze_path.push(chosen_tile)
     # Once a side is chosen now we start iterating over the stack until
     # an edge is met + a minimum size is counted
@@ -53,18 +55,51 @@ def main():
     #       i.e. if that tile was chosen, it won't connect to existing lines
     # If no tile can be selected, remove top of stack and repeat.
     # If the tile meets all conditions, add to stack and repeat.
-    while len(maze_path) < MINIMUM_SIZE and not maze_path.peek().is_edge_tile(MAZE_SIZE):
-        possible_tiles = []
+    while len(maze_path) < MINIMUM_SIZE or not maze_path.peek().is_edge_tile(MAZE_SIZE):
+
+        time.sleep(0.2)
+        os.system("cls")
+        print(f"Current Tile: {maze_path.peek()}")
+
+        possible_tiles = grid.get_adjacent(maze_path.peek(), len(maze_path), 1)
+        print(possible_tiles)
+        print(grid.display())
+        # if no tile fits conditions, pop too tile
+        if len(possible_tiles) == 0:
+            # swap tile to no longer path
+            for t in range(stuck_back_track):
+                reset_tile = maze_path.pop()
+                reset_tile.set_path()
+
+            stuck_back_track += 1
+            continue
+
+        if previously_stuck and len(possible_tiles) == 1:
+            old_tile = maze_path.pop()
+            old_tile.set_path()
+            continue
+
+        if previously_stuck and len(possible_tiles) > 1:
+            previously_stuck = False
 
 
 
+        new_tile = random.choice(possible_tiles)
+        new_tile.set_path()
+        maze_path.push(new_tile)
+
+
+
+
+        #print("\n\n\n")
 
     # Phase 2: Backtrack through Stack to add distractor routes
     # Look at top tile in stack
     # see if any tiles adjacent can be added to stack following same rules as above
     # If possible, randomly push 1 valid tile to stack and repeat
     # if no spots exist, pop stack and repeat.
-
+    os.system("cls")
+    print(grid.display())
 
 if __name__=="__main__":
     main()
