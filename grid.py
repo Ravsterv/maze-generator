@@ -8,7 +8,7 @@ class Grid:
     def set_grid(self):
         self._grid = []
 
-    def add_row(self, row):
+    def add_row(self, row:list[Tile]):
         self._grid.append(row)
 
     def get_tile(self, x, y):
@@ -24,3 +24,23 @@ class Grid:
 
 
         return chosen_tiles
+
+    def display(self) -> str:
+        """
+        Will print the grid in a visual style of a maze
+
+        :return:
+        """
+        maze_str = ""
+
+        for row in self._grid:
+            for col in row:
+                if col.get_path():
+                    maze_str += (chr(9608))
+                else:
+                    maze_str += " "
+            maze_str += "\n"
+        return maze_str
+
+
+
