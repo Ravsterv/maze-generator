@@ -4,12 +4,19 @@ class Tile:
         self._x = x
         self._y = y
         self._previously_backed = False
+        self._growth_strength = 10
 
     def get_path(self):
         return self._on_path
 
     def set_path(self):
         self._on_path = not self._on_path
+
+    def set_growth_strength(self, new_growth):
+        self._growth_strength = new_growth
+
+    def get_growth(self):
+        return self._growth_strength
 
     def set_back_track(self):
         self._previously_backed = not self._previously_backed
@@ -41,4 +48,4 @@ class Tile:
         return other.get_cord() == self.get_cord()
 
     def __str__(self):
-        return f"Tile({self._x},{self._y})"
+        return f"Tile({self._x},{self._y}, {self._growth_strength})"

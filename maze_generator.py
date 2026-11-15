@@ -57,7 +57,7 @@ def main():
     # If the tile meets all conditions, add to stack and repeat.
     while len(maze_path) < MINIMUM_SIZE or not maze_path.peek().is_edge_tile(MAZE_SIZE):
 
-        time.sleep(0.2)
+        time.sleep(0.1)
         os.system("cls")
         print(f"Current Tile: {maze_path.peek()}")
 
@@ -85,6 +85,9 @@ def main():
 
         new_tile = random.choice(possible_tiles)
         new_tile.set_path()
+        # Add Growth strength to chosen tile
+        new_tile.set_growth_strength(random.randint(1, 10))
+
         maze_path.push(new_tile)
 
 
@@ -106,25 +109,43 @@ def main():
 
     while len(maze_path) != 0 or len(phase2_stack) != 0:
         if len(maze_path) == 0:
+            print(len(phase2_stack))
+            print(phase2_stack)
+
             # Reset the stack once all have swapped over, note this reverses stack order
             maze_path = phase2_stack
             phase2_stack = Stack()
         # Find possible locations the tile can go looking at the top
+
+        # Add randomness through "Growth Strength" to increase varied maze design
+        growth_chance = random.randint(1, 10)
+        if growth_chance > maze_path.peek().get_growth():
+            # Skip current tile and proceed
+            phase2_stack.push(maze_path.pop())
+            continue
+
+
+        # when a tile propagates it transfers its growth strength to the child
         new_tiles = grid.get_adjacent(maze_path.peek(), MAZE_SIZE, 2)
         if len(new_tiles) == 0:
             maze_path.pop()
             continue
 
+
         # Choose tile, add to secondary stack
         b_tile = random.choice(new_tiles)
         b_tile.set_path()
+        b_tile.set_growth_strength(maze_path.peek().get_growth())
+
         phase2_stack.push(b_tile)
         phase2_stack.push(maze_path.pop())
 
         os.system("cls")
         print(grid.display())
         time.sleep(0.05)
+    print("Generation Done")
 
 
 if __name__ == "__main__":
     main()
+

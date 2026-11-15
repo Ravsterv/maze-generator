@@ -45,3 +45,10 @@ class Stack:
 
     def __len__(self):
         return len(self._stack)
+
+    def __str__(self):
+        tile_stack = ""
+        for tile in self._stack:
+            tile_stack = str(tile)+" "
+
+        return tile_stack
