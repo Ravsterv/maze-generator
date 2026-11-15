@@ -86,9 +86,9 @@ class Grid:
         for row in self._grid:
             for col in row:
                 if not col.get_path():
-                    maze_str += (chr(9608))
+                    maze_str += chr(9608) + chr(9608) + chr(9608)
                 else:
-                    maze_str += " "
+                    maze_str += "   "
             maze_str += "\n"
         return maze_str
 

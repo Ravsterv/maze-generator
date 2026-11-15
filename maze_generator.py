@@ -97,8 +97,34 @@ def main():
     # see if any tiles adjacent can be added to stack following same rules as above
     # If possible, randomly push 1 valid tile to stack and repeat
     # if no spots exist, pop stack and repeat.
+    # Use two stacks, when adding new tiles and after looking at a tile pop and push it to the new stack
+    # don't transfer if no possible locations exist
+
+    phase2_stack = Stack()
     os.system("cls")
     print(grid.display())
 
-if __name__=="__main__":
+    while len(maze_path) != 0 or len(phase2_stack) != 0:
+        if len(maze_path) == 0:
+            # Reset the stack once all have swapped over, note this reverses stack order
+            maze_path = phase2_stack
+            phase2_stack = Stack()
+        # Find possible locations the tile can go looking at the top
+        new_tiles = grid.get_adjacent(maze_path.peek(), MAZE_SIZE, 2)
+        if len(new_tiles) == 0:
+            maze_path.pop()
+            continue
+
+        # Choose tile, add to secondary stack
+        b_tile = random.choice(new_tiles)
+        b_tile.set_path()
+        phase2_stack.push(b_tile)
+        phase2_stack.push(maze_path.pop())
+
+        os.system("cls")
+        print(grid.display())
+        time.sleep(0.05)
+
+
+if __name__ == "__main__":
     main()
