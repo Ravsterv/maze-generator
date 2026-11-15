@@ -25,6 +25,19 @@ class Grid:
             return None
         return self._grid[y][x]
 
+    def check_adjacency(self, tile_delta: list[list[int]], adj_tile: Tile, cur_tile: Tile) -> bool:
+        valid_tile = True
+
+        adj_x, adj_y = adj_tile.get_cord()
+        for adj_delta in tile_delta:
+            tile_check = self.get_tile(adj_x + adj_delta[0], adj_y + adj_delta[1])
+            if tile_check is not None:
+                if tile_check.get_path() and tile_check != cur_tile:
+                    valid_tile = False
+
+        # Append valid tiles to list which we then check those tiles for adjacency
+        return valid_tile
+
     def get_adjacent(self, tile: Tile, current_maze_size: int, phase: int) -> list[Tile]:
         """
 
@@ -49,6 +62,9 @@ class Grid:
 
             # if phase is 1 and you exceed the minimum maze size, you can select an edge as a valid tile
             if adj_tile.is_edge_tile(self.get_grid_size()) and current_maze_size >= MINIMUM_SIZE and phase == 1:
+                if not self.check_adjacency(tile_delta, adj_tile, tile):
+                    continue
+
                 chosen_tiles.append(adj_tile)
                 continue
 
@@ -56,20 +72,11 @@ class Grid:
             if adj_tile.is_edge_tile(self.get_grid_size()) or adj_tile.get_path():
                 continue
 
-            adj_x, adj_y = adj_tile.get_cord()
-            valid_tile = True
+            if not self.check_adjacency(tile_delta, adj_tile, tile):
+                continue
+            chosen_tiles.append(adj_tile)
 
-            # Check that the adjacent tiles to the adj_tile aren't open(open tiles would create a new path
-            for adj_delta in tile_delta:
-                tile_check = self.get_tile(adj_x + adj_delta[0], adj_y + adj_delta[1])
-                if tile_check is not None:
-                    if tile_check.get_path() and tile_check != tile:
-                        valid_tile = False
-
-            # Append valid tiles to list which we then check those tiles for adjacency
-            if valid_tile:
-                chosen_tiles.append(adj_tile)
-
+            # Check that the adjacent tiles to the adj_tile aren't open(open tiles would create a new pa
 
         # Possibly create a second function to check if Adjacent tiles don't break tile rules?
 

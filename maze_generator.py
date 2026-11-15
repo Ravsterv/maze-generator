@@ -109,8 +109,8 @@ def main():
 
     while len(maze_path) != 0 or len(phase2_stack) != 0:
         if len(maze_path) == 0:
-            print(len(phase2_stack))
-            print(phase2_stack)
+            # print(len(phase2_stack))
+            # print(phase2_stack)
 
             # Reset the stack once all have swapped over, note this reverses stack order
             maze_path = phase2_stack
@@ -118,6 +118,7 @@ def main():
         # Find possible locations the tile can go looking at the top
 
         # Add randomness through "Growth Strength" to increase varied maze design
+
         growth_chance = random.randint(1, 10)
         if growth_chance > maze_path.peek().get_growth():
             # Skip current tile and proceed
