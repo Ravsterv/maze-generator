@@ -7,6 +7,7 @@ from grid import Grid
 import time
 import os
 from variables import *
+import sys
 
 
 
@@ -148,5 +149,12 @@ def main():
 
 
 if __name__ == "__main__":
+    arguments = sys.argv
+    script_name = arguments[0]
+    args = arguments[1:]
+    for arg in args:
+        print(arg)
+
+    time.sleep(10)
     main()
 

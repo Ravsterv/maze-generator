@@ -49,3 +49,10 @@ class Tile:
 
     def __str__(self):
         return f"Tile({self._x},{self._y}, {self._growth_strength})"
+
+
+class TileAdvanced(Tile):
+    def __init__(self, x, y):
+        super().__init__(x, y)
+
+        self._faces_open = (False, False, False, False) # North, South, East, West

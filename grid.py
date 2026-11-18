@@ -7,6 +7,7 @@ class Grid:
     def __init__(self):
         self._grid = []
 
+
     def set_grid(self):
         self._grid = []
 
@@ -100,4 +101,26 @@ class Grid:
         return maze_str
 
 
+class GridAdvanced(Grid):
 
+    """
+    Grid Advanced will take advantage of a different method of maze generation
+    """
+    def __init__(self):
+        super().__init__()
+        # Create Look up table for cell creation
+        self._cell_look_up = {(False, False, False, False): u"",
+                              (False, False, False, True): u"",
+                              (False, False, True, False): u"",
+                              (False, False, True, True): u"",
+                              (False, True, False, False): u"",
+                              (False, True, False, True): u"",
+                              (False, True, True, True): u"",
+                              (True, False, False, False): u"",
+                              (True, False, False, True): u"",
+                              (True, False, True, False): u"",
+                              (True, False, True, True): u"",
+                              (True, True, False, False): u"",
+                              (True, True, False, True): u"",
+                              (True, True, True, False): u"",
+                              (True, True, True, True): "  \n  "}
